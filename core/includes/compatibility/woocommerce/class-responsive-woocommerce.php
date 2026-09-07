@@ -76,6 +76,10 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 
 			add_action( 'responsive_header_bottom', array( $this, 'single_product_page_floating_bar' ) );
 
+			add_filter( 'loop_shop_per_page', array( $this, 'responsive_shop_loop_per_page' ), 99 );
+			add_action( 'woocommerce_product_query', array( $this, 'responsive_woocommerce_product_query' ), 20 );
+			add_action( 'pre_get_posts', array( $this, 'responsive_woocommerce_pre_get_posts' ), 20 );
+
 		}
 		/**
 		 * Remove Woo-Commerce Default actions
@@ -126,6 +130,50 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 			$crossselles_enabled = get_theme_mod( 'responsive_enable_crosssells_options', 1 );
 			if ( ! $crossselles_enabled ) {
 				remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
+			}
+		}
+
+		/**
+		 * Change number of products per page if set in theme customizer.
+		 *
+		 * @param int $products_per_page Number of products per page.
+		 * @return int Number of products per page.
+		 */
+		public function responsive_shop_loop_per_page( $products_per_page ) {
+			$custom_per_page = get_theme_mod( 'responsive_shop_products_per_page', '' );
+			if ( ! empty( $custom_per_page ) && is_numeric( $custom_per_page ) && $custom_per_page > 0 ) {
+				return absint( $custom_per_page );
+			}
+			return $products_per_page;
+		}
+
+		/**
+		 * Set products per page for WooCommerce product query.
+		 *
+		 * @param WP_Query $query The query instance.
+		 */
+		public function responsive_woocommerce_product_query( $query ) {
+			$custom_per_page = get_theme_mod( 'responsive_shop_products_per_page', '' );
+			if ( ! empty( $custom_per_page ) && is_numeric( $custom_per_page ) && $custom_per_page > 0 ) {
+				$query->set( 'posts_per_page', absint( $custom_per_page ) );
+			}
+		}
+
+		/**
+		 * Set products per page on WooCommerce archive pre_get_posts.
+		 *
+		 * @param WP_Query $query The query instance.
+		 */
+		public function responsive_woocommerce_pre_get_posts( $query ) {
+			if ( is_admin() || ! $query->is_main_query() ) {
+				return;
+			}
+
+			if ( ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) || $query->is_post_type_archive( 'product' ) ) {
+				$custom_per_page = get_theme_mod( 'responsive_shop_products_per_page', '' );
+				if ( ! empty( $custom_per_page ) && is_numeric( $custom_per_page ) && $custom_per_page > 0 ) {
+					$query->set( 'posts_per_page', absint( $custom_per_page ) );
+				}
 			}
 		}
 

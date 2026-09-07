@@ -81,7 +81,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'woocommerce_category_archive_display',
 				$general_tab_ids_prefix . 'woocommerce_default_catalog_orderby',
 				$general_tab_ids_prefix . 'woocommerce_catalog_columns',
-				$general_tab_ids_prefix . 'woocommerce_catalog_rows',
+				$general_tab_ids_prefix . 'responsive_shop_products_per_page',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout_separator',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_style_separator',
@@ -228,6 +228,34 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			$shop_display_options_heading = esc_html__( 'Shop Display Options', 'responsive' );
 			responsive_separator_control( $wp_customize, 'shop_display_options_separator', $shop_display_options_heading, 'responsive_woocommerce_shop', 41 );
 
+			// Products per page.
+			$default_products_per_page = absint( get_option( 'woocommerce_catalog_columns', 4 ) ) * absint( get_option( 'woocommerce_catalog_rows', 4 ) );
+			if ( ! $default_products_per_page ) {
+				$default_products_per_page = 16;
+			}
+			$wp_customize->add_setting(
+				'responsive_shop_products_per_page',
+				array(
+					'default'           => $default_products_per_page,
+					'sanitize_callback' => 'absint',
+					'transport'         => 'refresh',
+				)
+			);
+			$wp_customize->add_control(
+				'responsive_shop_products_per_page',
+				array(
+					'label'       => esc_html__( 'Products per page', 'responsive' ),
+					'description' => esc_html__( 'How many products should be shown per page?', 'responsive' ),
+					'section'     => 'responsive_woocommerce_shop',
+					'priority'    => 46,
+					'type'        => 'number',
+					'input_attrs' => array(
+						'min'  => 1,
+						'step' => 1,
+					),
+				)
+			);
+
 			$outside_container_label = __( 'Padding (px)', 'responsive' );
 			responsive_padding_control( $wp_customize, 'product_card_outside_container', 'responsive_woocommerce_shop', 33, 15, 15, '', $outside_container_label );
 
@@ -359,7 +387,6 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				'woocommerce_category_archive_display' => 43,
 				'woocommerce_default_catalog_orderby'  => 44,
 				'woocommerce_catalog_columns'          => 45,
-				'woocommerce_catalog_rows'             => 46,
 			);
 
 			foreach ( $wc_catalog_controls as $control_id => $priority ) {
@@ -370,9 +397,15 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				}
 			}
 
+			// Remove rows per page control from Customizer UI while keeping the option/theme_mod intact.
+			$wp_customize->remove_control( 'woocommerce_catalog_rows' );
+
 			if ( method_exists( $wp_customize, 'controls' ) ) {
 				foreach ( $wp_customize->controls() as $control ) {
 					if ( 'woocommerce_product_catalog' === $control->section ) {
+						if ( 'woocommerce_catalog_rows' === $control->id ) {
+							continue;
+						}
 						$control->section  = 'responsive_woocommerce_shop';
 						$control->priority = 46;
 					}

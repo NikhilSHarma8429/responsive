@@ -664,6 +664,11 @@ if ( ! function_exists( 'responsive_blog_posts_per_page' ) ) :
 		$per_page = get_theme_mod( 'responsive_blog_post_per_page', 10 );
 
 		if ( ! is_admin() && $query->is_main_query() ) {
+			// Do not override WooCommerce product queries.
+			if ( ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) || $query->is_post_type_archive( 'product' ) ) {
+				return;
+			}
+
 			if ( $query->is_home() || $query->is_archive() ) {
 				$query->set( 'posts_per_page', absint( $per_page ) );
 			}
