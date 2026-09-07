@@ -21,6 +21,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 		public function __construct() {
 
 			add_action( 'customize_register', array( $this, 'customizer_options' ) );
+			add_action( 'customize_register', array( $this, 'move_wc_catalog_controls' ), 50 );
 
 		}
 
@@ -36,7 +37,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			$wp_customize->add_section(
 				'responsive_woocommerce_shop',
 				array(
-					'title'    => esc_html__( 'Product Catalog Options', 'responsive' ),
+					'title'    => esc_html__( 'Product Catalog', 'responsive' ),
 					'panel'    => 'woocommerce',
 					'priority' => 5,
 				)
@@ -75,6 +76,12 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'responsive_shop_sidebar_position',
 				$general_tab_ids_prefix . 'responsive_shop_sidebar_style',
 				$general_tab_ids_prefix . 'responsive_shop_sidebar_width',
+				$general_tab_ids_prefix . 'responsive_shop_display_options_separator',
+				$general_tab_ids_prefix . 'woocommerce_shop_page_display',
+				$general_tab_ids_prefix . 'woocommerce_category_archive_display',
+				$general_tab_ids_prefix . 'woocommerce_default_catalog_orderby',
+				$general_tab_ids_prefix . 'woocommerce_catalog_columns',
+				$general_tab_ids_prefix . 'woocommerce_catalog_rows',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout_separator',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_style_separator',
@@ -217,6 +224,9 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			$sidebar_width_label = esc_html__( 'Sidebar Width (%)', 'responsive' );
 			responsive_drag_number_control( $wp_customize, 'shop_sidebar_width', $sidebar_width_label, 'responsive_woocommerce_shop' , 40, 30, 'responsive_active_shop_sidebar_position', 50, 15, 'postMessage' );
 
+			// Shop Display Options heading.
+			$shop_display_options_heading = esc_html__( 'Shop Display Options', 'responsive' );
+			responsive_separator_control( $wp_customize, 'shop_display_options_separator', $shop_display_options_heading, 'responsive_woocommerce_shop', 41 );
 
 			$outside_container_label = __( 'Padding (px)', 'responsive' );
 			responsive_padding_control( $wp_customize, 'product_card_outside_container', 'responsive_woocommerce_shop', 33, 15, 15, '', $outside_container_label );
@@ -227,7 +237,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 
 			// Shop Elements.
 			$shop_elements_label = esc_html__( 'Shop Product', 'responsive' );
-			responsive_separator_control( $wp_customize, 'shop_elements_separator', $shop_elements_label, 'responsive_woocommerce_shop', 40 );
+			responsive_separator_control( $wp_customize, 'shop_elements_separator', $shop_elements_label, 'responsive_woocommerce_shop', 47 );
 
 			// Catalog View.
 			$woocommerce_catalog_view_label   = esc_html__( 'Catalog View', 'responsive' );
@@ -336,6 +346,40 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			$filter_button_border_color_hover = __( 'Filter Button Border Hover Color', 'responsive' );
 			responsive_color_control( $wp_customize, 'off_canvas_filter_button_border_hover', $filter_button_border_color_hover, 'responsive_woocommerce_shop', 140, '#10659c', 'enable_off_canvas_filter_check' );
 
+		}
+
+		/**
+		 * Move controls from woocommerce_product_catalog to responsive_woocommerce_shop and remove that section.
+		 *
+		 * @param WP_Customize_Manager $wp_customize WordPress customization option.
+		 */
+		public function move_wc_catalog_controls( $wp_customize ) {
+			$wc_catalog_controls = array(
+				'woocommerce_shop_page_display'        => 42,
+				'woocommerce_category_archive_display' => 43,
+				'woocommerce_default_catalog_orderby'  => 44,
+				'woocommerce_catalog_columns'          => 45,
+				'woocommerce_catalog_rows'             => 46,
+			);
+
+			foreach ( $wc_catalog_controls as $control_id => $priority ) {
+				$control = $wp_customize->get_control( $control_id );
+				if ( $control ) {
+					$control->section  = 'responsive_woocommerce_shop';
+					$control->priority = $priority;
+				}
+			}
+
+			if ( method_exists( $wp_customize, 'controls' ) ) {
+				foreach ( $wp_customize->controls() as $control ) {
+					if ( 'woocommerce_product_catalog' === $control->section ) {
+						$control->section  = 'responsive_woocommerce_shop';
+						$control->priority = 46;
+					}
+				}
+			}
+
+			$wp_customize->remove_section( 'woocommerce_product_catalog' );
 		}
 	}
 
