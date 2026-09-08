@@ -84,6 +84,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'woocommerce_default_catalog_orderby',
 				$general_tab_ids_prefix . 'woocommerce_catalog_columns',
 				$general_tab_ids_prefix . 'responsive_shop_products_per_page',
+				$general_tab_ids_prefix . 'responsive_show_archive_results_count',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout_separator',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_style_separator',
@@ -257,6 +258,10 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 					),
 				)
 			);
+
+			// Archive Results Count.
+			$show_archive_results_count_label = esc_html__( 'Show Archive Results Count?', 'responsive' );
+			responsive_toggle_control( $wp_customize, 'show_archive_results_count', $show_archive_results_count_label, 'responsive_woocommerce_shop', 47, Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_results_count' ), null, 'refresh' );
 
 			$outside_container_label = __( 'Padding (px)', 'responsive' );
 			responsive_padding_control( $wp_customize, 'product_card_outside_container', 'responsive_woocommerce_shop', 33, 15, 15, '', $outside_container_label );
