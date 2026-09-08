@@ -96,6 +96,10 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 			if ( ! get_theme_mod( 'responsive_show_archive_results_count', Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_results_count' ) ) ) {
 				remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 			}
+
+			if ( ! get_theme_mod( 'responsive_show_archive_sorting_dropdown', Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_sorting_dropdown' ) ) ) {
+				remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
+			}
 		}
 		/**
 		 * Register Customizer sections and panel for woocommerce

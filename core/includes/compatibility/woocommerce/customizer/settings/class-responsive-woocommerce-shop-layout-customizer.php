@@ -85,6 +85,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'woocommerce_catalog_columns',
 				$general_tab_ids_prefix . 'responsive_shop_products_per_page',
 				$general_tab_ids_prefix . 'responsive_show_archive_results_count',
+				$general_tab_ids_prefix . 'responsive_show_archive_sorting_dropdown',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout_separator',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_style_separator',
@@ -263,6 +264,10 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			$show_archive_results_count_label = esc_html__( 'Show Archive Results Count?', 'responsive' );
 			responsive_toggle_control( $wp_customize, 'show_archive_results_count', $show_archive_results_count_label, 'responsive_woocommerce_shop', 47, Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_results_count' ), null, 'refresh' );
 
+			// Archive Sorting Dropdown.
+			$show_archive_sorting_dropdown_label = esc_html__( 'Show Archive Sorting Dropdown?', 'responsive' );
+			responsive_toggle_control( $wp_customize, 'show_archive_sorting_dropdown', $show_archive_sorting_dropdown_label, 'responsive_woocommerce_shop', 48, Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_sorting_dropdown' ), null, 'refresh' );
+
 			$outside_container_label = __( 'Padding (px)', 'responsive' );
 			responsive_padding_control( $wp_customize, 'product_card_outside_container', 'responsive_woocommerce_shop', 33, 15, 15, '', $outside_container_label );
 
@@ -272,7 +277,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 
 			// Shop Elements.
 			$shop_elements_label = esc_html__( 'Shop Product', 'responsive' );
-			responsive_separator_control( $wp_customize, 'shop_elements_separator', $shop_elements_label, 'responsive_woocommerce_shop', 47 );
+			responsive_separator_control( $wp_customize, 'shop_elements_separator', $shop_elements_label, 'responsive_woocommerce_shop', 50 );
 
 			// Catalog View.
 			$woocommerce_catalog_view_label   = esc_html__( 'Catalog View', 'responsive' );
