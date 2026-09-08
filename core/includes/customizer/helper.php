@@ -2415,6 +2415,19 @@ function responsive_active_shop_sidebar_position() {
 }
 
 /**
+ * Active callback for Review Count control: visible only when ratings is in shop elements positioning.
+ *
+ * @return boolean True if ratings is visible, false otherwise.
+ */
+function responsive_check_shop_ratings_visible() {
+	$elements = get_theme_mod( 'responsive_woocommerce_shop_elements_positioning', array( 'category', 'title', 'price', 'short_desc', 'ratings', 'add_cart' ) );
+	if ( is_string( $elements ) ) {
+		$elements = explode( ',', $elements );
+	}
+	return is_array( $elements ) && in_array( 'ratings', $elements, true );
+}
+
+/**
  * [responsive_active_single_product_sidebar_position description]
  *
  * @return [type] [description]

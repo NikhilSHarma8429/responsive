@@ -57,6 +57,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'responsive_woocommerce_catalog_view',
 				$general_tab_ids_prefix . 'responsive_product_content_aligmnment',
 				$general_tab_ids_prefix . 'responsive_woocommerce_shop_elements_positioning',
+				$general_tab_ids_prefix . 'responsive_product_review_count',
 				$general_tab_ids_prefix . 'responsive_product_sale_notification',
 				$general_tab_ids_prefix . 'responsive_product_sale_style',
 				$general_tab_ids_prefix . 'responsive_off_canvas_filter_separator',
@@ -314,6 +315,14 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 					)
 				)
 			);
+			// Review Count.
+			$product_review_count_label   = esc_html__( 'Review Count', 'responsive' );
+			$product_review_count_choices = array(
+				'default'    => __( 'Default', 'responsive' ),
+				'count-text' => __( 'Count + Text', 'responsive' ),
+			);
+			responsive_select_control( $wp_customize, 'product_review_count', $product_review_count_label, 'responsive_woocommerce_shop', 78, $product_review_count_choices, 'default', 'responsive_check_shop_ratings_visible' );
+
 			// Sale Notification.
 			$product_sale_notification_label   = esc_html__( 'Sale Notification', 'responsive' );
 			$product_sale_notification_choices = array(

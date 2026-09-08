@@ -49,6 +49,10 @@ ul.products {
             .star-rating {
                 margin: 0 auto;
             }
+
+            .responsive-product-rating-wrap {
+                justify-content: center;
+            }
         }
 
         .product-content-aligmnment-right & {
@@ -57,15 +61,55 @@ ul.products {
             .star-rating {
                 margin: 0 0 0 auto;
             }
+
+            .responsive-product-rating-wrap {
+                justify-content: flex-end;
+            }
         }
 
         .product-content-aligmnment-right.responsive-catalog-view-list & {
             justify-content: space-between;
         }
 
+        .responsive-product-rating-wrap {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 1;
+
+            .star-rating {
+                float: none;
+                display: inline-block;
+                margin: 0;
+            }
+
+            .responsive-review-count {
+                font-size: 0.875em;
+                line-height: 1;
+            }
+        }
+
         .onsale {
             line-height: 2.9;
         }
+    }
+}
+
+.responsive-product-rating-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1;
+
+    .star-rating {
+        float: none;
+        display: inline-block;
+        margin: 0;
+    }
+
+    .responsive-review-count {
+        font-size: 0.875em;
+        line-height: 1;
     }
 }
 

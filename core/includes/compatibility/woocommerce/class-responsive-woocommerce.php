@@ -219,7 +219,27 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 								/**
 								 * Rating on shop page.
 								 */
-								woocommerce_template_loop_rating();
+								$review_count_format = get_theme_mod( 'responsive_product_review_count', 'default' );
+								if ( 'count-text' === $review_count_format ) {
+									ob_start();
+									woocommerce_template_loop_rating();
+									$rating_html = ob_get_clean();
+
+									if ( ! empty( $rating_html ) ) {
+										global $product;
+										if ( ! is_a( $product, 'WC_Product' ) ) {
+											$product = wc_get_product( get_the_ID() );
+										}
+										$review_count = $product ? $product->get_review_count() : 0;
+										echo '<div class="responsive-product-rating-wrap">';
+										echo $rating_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										/* translators: %s: number of reviews */
+										echo '<span class="responsive-review-count">' . esc_html( sprintf( _n( '%s review', '%s reviews', $review_count, 'responsive' ), number_format_i18n( $review_count ) ) ) . '</span>';
+										echo '</div>';
+									}
+								} else {
+									woocommerce_template_loop_rating();
+								}
 								break;
 							case 'category':
 								/**

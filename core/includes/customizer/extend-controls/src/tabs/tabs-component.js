@@ -1089,6 +1089,15 @@ const TabsComponent = props => {
 			});
 		}
 
+		toggleShopReviewCountControl();
+		if (api('responsive_woocommerce_shop_elements_positioning')) {
+			api('responsive_woocommerce_shop_elements_positioning', function(value) {
+				value.bind(function() {
+					toggleShopReviewCountControl();
+				});
+			});
+		}
+
 	}, [tab]);
 
 	const hideSidebarWidthControl = (value, control) => {
@@ -1581,6 +1590,15 @@ const TabsComponent = props => {
 		if (overlayColorElement) {
 			overlayColorElement.style.display = (position === 'background' && tab === 'design') ? 'block' : 'none';
 		}
+	};
+
+	const toggleShopReviewCountControl = () => {
+		const reviewCountEl = document.getElementById('customize-control-responsive_product_review_count');
+		if (!reviewCountEl) return;
+		const positioningSetting = api('responsive_woocommerce_shop_elements_positioning');
+		const elements = positioningSetting ? positioningSetting.get() : [];
+		const isRatingsVisible = Array.isArray(elements) ? elements.includes('ratings') : (typeof elements === 'string' && elements.split(',').includes('ratings'));
+		reviewCountEl.style.display = (isRatingsVisible && tab === 'general') ? 'block' : 'none';
 	};
 
 	return <>
