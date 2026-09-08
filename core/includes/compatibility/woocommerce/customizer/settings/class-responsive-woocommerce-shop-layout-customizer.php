@@ -86,6 +86,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'responsive_shop_products_per_page',
 				$general_tab_ids_prefix . 'responsive_show_archive_results_count',
 				$general_tab_ids_prefix . 'responsive_show_archive_sorting_dropdown',
+				$general_tab_ids_prefix . 'responsive_product_image_hover_switch',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout_separator',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_layout',
 				$general_tab_ids_prefix . 'responsive_product_catalog_container_style_separator',
@@ -267,6 +268,17 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 			// Archive Sorting Dropdown.
 			$show_archive_sorting_dropdown_label = esc_html__( 'Show Archive Sorting Dropdown?', 'responsive' );
 			responsive_toggle_control( $wp_customize, 'show_archive_sorting_dropdown', $show_archive_sorting_dropdown_label, 'responsive_woocommerce_shop', 48, Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_sorting_dropdown' ), null, 'refresh' );
+
+			// Product Image Hover Switch.
+			$product_image_hover_switch_label   = esc_html__( 'Product Image Hover Switch', 'responsive' );
+			$product_image_hover_switch_choices = array(
+				'none'  => esc_html__( 'None', 'responsive' ),
+				'fade'  => esc_html__( 'Fade', 'responsive' ),
+				'slide' => esc_html__( 'Slide', 'responsive' ),
+				'zoom'  => esc_html__( 'Zoom', 'responsive' ),
+				'flip'  => esc_html__( 'Flip', 'responsive' ),
+			);
+			responsive_select_control( $wp_customize, 'product_image_hover_switch', $product_image_hover_switch_label, 'responsive_woocommerce_shop', 49, $product_image_hover_switch_choices, Responsive\Core\get_responsive_customizer_defaults( 'responsive_product_image_hover_switch' ), null, 'refresh' );
 
 			$outside_container_label = __( 'Padding (px)', 'responsive' );
 			responsive_padding_control( $wp_customize, 'product_card_outside_container', 'responsive_woocommerce_shop', 33, 15, 15, '', $outside_container_label );

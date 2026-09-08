@@ -100,6 +100,12 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 			if ( ! get_theme_mod( 'responsive_show_archive_sorting_dropdown', Responsive\Core\get_responsive_customizer_defaults( 'responsive_show_archive_sorting_dropdown' ) ) ) {
 				remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 			}
+
+			$hover_style = get_theme_mod( 'responsive_product_image_hover_switch', Responsive\Core\get_responsive_customizer_defaults( 'responsive_product_image_hover_switch' ) );
+			if ( 'none' !== $hover_style ) {
+				remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+				add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'responsive_woocommerce_template_loop_product_thumbnail' ), 10 );
+			}
 		}
 		/**
 		 * Register Customizer sections and panel for woocommerce
@@ -638,6 +644,40 @@ if ( ! class_exists( 'Responsive_Woocommerce' ) ) :
 			$html .= '</form>';
 
 			return $html;
+		}
+
+		/**
+		 * Product Image Hover Switch in product loop.
+		 */
+		public function responsive_woocommerce_template_loop_product_thumbnail() {
+			global $product;
+
+			if ( ! is_a( $product, 'WC_Product' ) ) {
+				$product = wc_get_product( get_the_ID() );
+			}
+
+			$hover_style = get_theme_mod( 'responsive_product_image_hover_switch', Responsive\Core\get_responsive_customizer_defaults( 'responsive_product_image_hover_switch' ) );
+			$gallery_ids = $product ? $product->get_gallery_image_ids() : array();
+
+			if ( 'none' !== $hover_style && ! empty( $gallery_ids ) ) {
+				$secondary_id = $gallery_ids[0];
+				$size         = 'woocommerce_thumbnail';
+
+				echo '<div class="responsive-product-image-hover-wrap hover-effect-' . esc_attr( $hover_style ) . '">';
+				echo woocommerce_get_product_thumbnail(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_get_attachment_image(
+					$secondary_id,
+					$size,
+					false,
+					array(
+						'class' => 'responsive-product-secondary-image',
+						'alt'   => the_title_attribute( array( 'echo' => false ) ),
+					)
+				);
+				echo '</div>';
+			} else {
+				woocommerce_template_loop_product_thumbnail();
+			}
 		}
 
 	}

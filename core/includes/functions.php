@@ -1447,6 +1447,8 @@ function defaults() {
 			'responsive_single_blog_sidebar_style'=> 'default',
 			'responsive_shop_sidebar_style'       => 'default',
 			'responsive_show_archive_results_count' => 1,
+			'responsive_show_archive_sorting_dropdown' => 1,
+			'responsive_product_image_hover_switch' => 'none',
 			'responsive_single_product_sidebar_style' => 'default',
 			'responsive_widget_bottom_spacing'    => 30,
 			'responsive_widget_bottom_spacing_unit' => 'px',
