@@ -1090,10 +1090,12 @@ const TabsComponent = props => {
 		}
 
 		toggleShopReviewCountControl();
+		toggleShopAddToCartActionControl();
 		if (api('responsive_woocommerce_shop_elements_positioning')) {
 			api('responsive_woocommerce_shop_elements_positioning', function(value) {
 				value.bind(function() {
 					toggleShopReviewCountControl();
+					toggleShopAddToCartActionControl();
 				});
 			});
 		}
@@ -1599,6 +1601,15 @@ const TabsComponent = props => {
 		const elements = positioningSetting ? positioningSetting.get() : [];
 		const isRatingsVisible = Array.isArray(elements) ? elements.includes('ratings') : (typeof elements === 'string' && elements.split(',').includes('ratings'));
 		reviewCountEl.style.display = (isRatingsVisible && tab === 'general') ? 'block' : 'none';
+	};
+
+	const toggleShopAddToCartActionControl = () => {
+		const addToCartActionEl = document.getElementById('customize-control-responsive_shop_add_to_cart_action');
+		if (!addToCartActionEl) return;
+		const positioningSetting = api('responsive_woocommerce_shop_elements_positioning');
+		const elements = positioningSetting ? positioningSetting.get() : [];
+		const isAddToCartVisible = Array.isArray(elements) ? elements.includes('add_cart') : (typeof elements === 'string' && elements.split(',').includes('add_cart'));
+		addToCartActionEl.style.display = (isAddToCartVisible && tab === 'general') ? 'block' : 'none';
 	};
 
 	return <>

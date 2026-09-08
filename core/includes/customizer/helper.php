@@ -2428,6 +2428,19 @@ function responsive_check_shop_ratings_visible() {
 }
 
 /**
+ * Active callback for Add to Cart Action control: visible only when add_cart is in shop elements positioning.
+ *
+ * @return boolean True if add_cart is visible, false otherwise.
+ */
+function responsive_check_shop_add_to_cart_visible() {
+	$elements = get_theme_mod( 'responsive_woocommerce_shop_elements_positioning', array( 'category', 'title', 'price', 'short_desc', 'ratings', 'add_cart' ) );
+	if ( is_string( $elements ) ) {
+		$elements = explode( ',', $elements );
+	}
+	return is_array( $elements ) && in_array( 'add_cart', $elements, true );
+}
+
+/**
  * [responsive_active_single_product_sidebar_position description]
  *
  * @return [type] [description]

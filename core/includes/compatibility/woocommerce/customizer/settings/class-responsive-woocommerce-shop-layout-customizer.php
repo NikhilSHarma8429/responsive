@@ -58,6 +58,7 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				$general_tab_ids_prefix . 'responsive_product_content_aligmnment',
 				$general_tab_ids_prefix . 'responsive_woocommerce_shop_elements_positioning',
 				$general_tab_ids_prefix . 'responsive_product_review_count',
+				$general_tab_ids_prefix . 'responsive_shop_add_to_cart_action',
 				$general_tab_ids_prefix . 'responsive_product_sale_notification',
 				$general_tab_ids_prefix . 'responsive_product_sale_style',
 				$general_tab_ids_prefix . 'responsive_off_canvas_filter_separator',
@@ -322,6 +323,15 @@ if ( ! class_exists( 'Responsive_Woocommerce_Shop_Layout_Customizer' ) ) :
 				'count-text' => __( 'Count + Text', 'responsive' ),
 			);
 			responsive_select_control( $wp_customize, 'product_review_count', $product_review_count_label, 'responsive_woocommerce_shop', 78, $product_review_count_choices, 'default', 'responsive_check_shop_ratings_visible' );
+
+			// Add To Cart Action.
+			$shop_add_to_cart_action_label   = esc_html__( 'Add To Cart Action', 'responsive' );
+			$shop_add_to_cart_action_choices = array(
+				'default'       => __( 'Default', 'responsive' ),
+				'slide_in_cart' => __( 'Slide in cart', 'responsive' ),
+			);
+			$shop_add_to_cart_action_desc    = __( 'Please publish the changes and see result on the frontend. [Slide in cart requires Cart added inside Header Builder]', 'responsive' );
+			responsive_select_control( $wp_customize, 'shop_add_to_cart_action', $shop_add_to_cart_action_label, 'responsive_woocommerce_shop', 79, $shop_add_to_cart_action_choices, 'default', 'responsive_check_shop_add_to_cart_visible', 'refresh', $shop_add_to_cart_action_desc );
 
 			// Sale Notification.
 			$product_sale_notification_label   = esc_html__( 'Sale Notification', 'responsive' );
